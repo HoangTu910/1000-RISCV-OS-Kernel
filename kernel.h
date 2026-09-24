@@ -42,11 +42,11 @@
 #define VIRTIO_BLK_T_OUT 1
 
 struct process {
-    int pid; // 0 if it's an idle process
-    int state; // PROC_UNUSED, PROC_RUNNABLE, PROC_EXITED
-    vaddr_t sp; // kernel stack pointer
-    uint32_t *page_table; // points to first level page table
-    uint8_t stack[8192]; // kernel stack
+    int       pid;         // 0 if it's an idle process
+    int       state;       // PROC_UNUSED, PROC_RUNNABLE, PROC_EXITED
+    vaddr_t   sp;          // kernel stack pointer
+    uint32_t *page_table;  // points to first level page table
+    uint8_t   stack[8192]; // kernel stack
 };
 
 struct sbiret {
@@ -88,6 +88,7 @@ struct trap_frame {
     uint32_t sp;
 } __attribute__((packed));
 
+/** A virtual queue descriptor. */
 struct virtq_desc {
     uint64_t addr;
     uint32_t len;
@@ -95,23 +96,27 @@ struct virtq_desc {
     uint16_t next;
 } __attribute__((packed));
 
+/** The available ring. */
 struct virtq_avail {
     uint16_t flags;
     uint16_t index;
     uint16_t ring[VIRTQ_ENTRY_NUM];
 } __attribute__((packed));
 
+/** An element in the used ring. */
 struct virtq_used_elem {
     uint32_t id;
     uint32_t len;
 } __attribute__((packed));
 
+/** The used ring. */
 struct virtq_used {
     uint16_t flags;
     uint16_t index;
     struct virtq_used_elem ring[VIRTQ_ENTRY_NUM];
 } __attribute__((packed));
 
+/** A virtual queue. */
 struct virtio_virtq {
     struct virtq_desc descs[VIRTQ_ENTRY_NUM];
     struct virtq_avail avail;
@@ -121,6 +126,7 @@ struct virtio_virtq {
     uint16_t last_used_index;
 } __attribute__((packed));
 
+/** A virtio device. */
 struct virtio_blk_req {
     uint32_t type;
     uint32_t reserved;
@@ -129,6 +135,7 @@ struct virtio_blk_req {
     uint8_t status;
 } __attribute__((packed));
 
+/** A tar file header. */
 struct tar_header {
     char name[100];
     char mode[8];
@@ -150,6 +157,7 @@ struct tar_header {
     char data[];
 } __attribute__((packed));
 
+/** A file structure. */
 struct file {
     bool in_use;
     char name[100];
